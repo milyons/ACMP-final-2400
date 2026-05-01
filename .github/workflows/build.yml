@@ -1,0 +1,22 @@
+name: build-test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t django-app .
+
+      - name: Run container
+        run: docker run -d -p 8000:8000 django-app
+
+      - name: Wait
+        run: sleep 5
+
+      - name: Curl test
+        run: curl http://localhost:8000
